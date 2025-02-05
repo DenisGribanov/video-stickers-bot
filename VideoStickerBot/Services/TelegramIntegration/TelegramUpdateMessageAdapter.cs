@@ -6,9 +6,11 @@ namespace VideoStickerBot.Services.TelegramIntegration
     public class TelegramUpdateMessageAdapter : ITelegramUpdateMessage
     {
         private readonly Update? update;
+        private readonly long CurrentBotId;
 
-        public TelegramUpdateMessageAdapter(Update update)
+        public TelegramUpdateMessageAdapter(Update update, long CurrentBotId)
         {
+            this.CurrentBotId = CurrentBotId;
             this.update = update;
         }
 
@@ -45,7 +47,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
                 {
                     return 0;
                 }
-
             }
         }
 
@@ -68,7 +69,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
             }
         }
 
-
         public string InlineQueryText => update?.InlineQuery?.Query;
 
         public string InlineQueryOffset => update?.InlineQuery?.Offset;
@@ -76,7 +76,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
         public bool IsInlineQuery => update.Type.Equals(Telegram.Bot.Types.Enums.UpdateType.InlineQuery);
 
         public bool IsChannelPost => update.Type.Equals(Telegram.Bot.Types.Enums.UpdateType.ChannelPost);
-
 
         public int? ReplyMessageId => message?.ReplyToMessage?.MessageId;
 
@@ -89,7 +88,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
                 return message != null ? message?.MessageId : update.CallbackQuery.Message.MessageId;
             }
         }
-
 
         public bool IsChosenInlineResult => update.Type == Telegram.Bot.Types.Enums.UpdateType.ChosenInlineResult;
 
@@ -111,7 +109,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
                     return update.EditedChannelPost;
                 else
                     return null;
-
             }
         }
 
@@ -137,7 +134,7 @@ namespace VideoStickerBot.Services.TelegramIntegration
 
         public string? FileMimeType
         {
-           get
+            get
             {
                 return message?.Document?.MimeType;
             }
@@ -195,7 +192,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
             }
         }
 
-
         public long? FileSize
         {
             get
@@ -234,11 +230,42 @@ namespace VideoStickerBot.Services.TelegramIntegration
 
         public long? ChatId => message.Chat?.Id;
 
+        private bool BotAddedToChat
+        {
+            get
+            {
+                if (update.MyChatMember == null) return false;
+
+                if (update.MyChatMember.NewChatMember != null && update.MyChatMember.NewChatMember.Status == Telegram.Bot.Types.Enums.ChatMemberStatus.Member)
+                {
+                    return update.MyChatMember.NewChatMember.User.IsBot &&
+                            update.MyChatMember.NewChatMember.User.Id == CurrentBotId;
+                }
+
+                return false;
+            }
+        }
+
+        public long? BotAddedToChatId
+        {
+            get
+            {
+                if (BotAddedToChat)
+                {
+                    return update.MyChatMember.Chat.Id;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public override string? ToString()
         {
-            if(update != null)
+            if (update != null)
             {
-               return  Newtonsoft.Json.JsonConvert.SerializeObject(update);
+                return Newtonsoft.Json.JsonConvert.SerializeObject(update);
             }
 
             return null;

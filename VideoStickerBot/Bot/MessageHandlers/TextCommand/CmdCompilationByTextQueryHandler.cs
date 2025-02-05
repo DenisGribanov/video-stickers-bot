@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using VideoStickerBot.Bot.Handlers;
+﻿using VideoStickerBot.Bot.Handlers;
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Constants;
 using VideoStickerBot.Enums;
@@ -17,6 +16,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             if (isMatchForTelegramUpdate.HasValue)
                 return isMatchForTelegramUpdate.Value;
 
+            // /compilation@VideoStickersBot брат2
             isMatchForTelegramUpdate = TelegramUpdate.IsBotCommand &&
                                        TelegramUpdate.MessageText.Contains(BotCommands.COMPILATION.Replace("/", ""))
                                        && TelegramUpdate.MessageText.Split(" ").Length > 1;
@@ -33,7 +33,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             List<List<KeyValuePair<string, string>>> keyboard = new List<List<KeyValuePair<string, string>>>();
             keyboard.Add(new List<KeyValuePair<string, string>>());
 
-            if (new List<string>() { CashTagValues.ALL, CashTagValues.FRESH, CashTagValues.BEST }.Any(x=>x.Replace("$","").Equals(query)))
+            if (new List<string>() { CashTagValues.ALL, CashTagValues.FRESH, CashTagValues.BEST }.Any(x => x.Replace("$", "").Equals(query)))
             {
                 keyboard.LastOrDefault().Add(new KeyValuePair<string, string>("Жми сюда 🙃", $"${query}"));
             }
@@ -68,8 +68,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
                 await Telegram.SendTextMessage("Подоборка кружочков для важных переговоров 😉🙃😊", CurrentUser.ChatId, keyboard);
             }
         }
-
-
 
         protected override BotState GetHandlerStateName()
         {

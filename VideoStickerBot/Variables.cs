@@ -4,7 +4,6 @@
     {
         private static Variables instance;
 
-
         public const string TELESCOPE_URL = "https://telesco.pe";
         public const string T_ME_URL = "https://t.me";
         public long BOT_OWNER_CHAT_ID { get; private set; }
@@ -18,9 +17,10 @@
 
         public string VIDEO_HELP_FILE_ID { get; private set; }
 
+        public string SUPPORT_CHAT { get; private set; }
+
         private Variables()
         {
-
         }
 
         private void Init(IConfiguration configuration)
@@ -32,13 +32,14 @@
             CACHE_FOLDER = configuration["CACHE_FOLDER"];
             PUBLIC_CHANNEL_URL = configuration["PUBLIC_CHANNEL_URL"];
             VIDEO_HELP_FILE_ID = configuration["VIDEO_HELP_FILE_ID"];
+            SUPPORT_CHAT = configuration["SUPPORT_CHAT"];
         }
 
         public static Variables InitInstance(IConfiguration configuration)
         {
-            if(instance == null)
+            if (instance == null)
             {
-                instance = new Variables(); 
+                instance = new Variables();
                 instance.Init(configuration);
             }
 

@@ -12,5 +12,7 @@
         public const string EDIT_HASHTAG = "/hastag";
         public const string COMPILATION = "/compilation";
         public const string HELP = "/help";
+        public const string FRESH = "/fresh";
+        public const string BEST = "/best";
     }
 }

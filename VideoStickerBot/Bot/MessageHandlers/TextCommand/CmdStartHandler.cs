@@ -2,8 +2,6 @@
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Constants;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
 {
@@ -11,7 +9,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
     {
         public CmdStartHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
-
         }
 
         public override bool Match()
@@ -28,13 +25,10 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
         {
             if (!Match()) return;
 
-
             await Telegram.SendTextMessage("Команды 👇" +
                 $"\n\n❓ Как пользоваться ? {BotCommands.HELP}" +
                 $"\n\n📋 Подборки кружочков {BotCommands.COMPILATION}" +
                 $"\n\n⚙️ Настройки {BotCommands.SETTINGS}", TelegramUpdate.ChatId.Value);
-
-
         }
 
         protected override BotState GetHandlerStateName()

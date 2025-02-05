@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Telegram.Bot.Types;
+﻿using System.Text;
 using VideoStickerBot.Bot.KeyboardDto;
 using VideoStickerBot.Enums;
 
@@ -63,7 +60,7 @@ namespace VideoStickerBot.Database
             StringBuilder sb = new StringBuilder();
 
             foreach (var tag in GetHashTags())
-            {   
+            {
                 sb.Append($"{tag} ");
             }
 
@@ -91,7 +88,7 @@ namespace VideoStickerBot.Database
 
         public int TotalClick()
         {
-            if (VideoStickersStats == null || VideoStickersStats.Count == 0 ) 
+            if (VideoStickersStats == null || VideoStickersStats.Count == 0)
                 return 0;
 
             return VideoStickersStats.Sum(s => s.ClickCount);

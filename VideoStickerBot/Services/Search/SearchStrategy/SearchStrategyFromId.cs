@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using VideoStickerBot.Database;
+﻿using VideoStickerBot.Database;
 
 namespace VideoStickerBot.Services.Search.SearchStrategy
 {
@@ -13,11 +12,9 @@ namespace VideoStickerBot.Services.Search.SearchStrategy
 
         string ISearchStrategy.Query => throw new NotImplementedException();
 
-        
-
         public bool IsMatch()
         {
-            if(isMatch.HasValue) return isMatch.Value; 
+            if (isMatch.HasValue) return isMatch.Value;
 
             isMatch = videoStickerId.HasValue && videoStickerId > 0;
             return isMatch.Value;
@@ -29,6 +26,5 @@ namespace VideoStickerBot.Services.Search.SearchStrategy
 
             return SourceStickers.Where(x => x.Id.Equals(videoStickerId));
         }
-
     }
 }

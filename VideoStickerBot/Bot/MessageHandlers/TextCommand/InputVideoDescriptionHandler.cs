@@ -1,22 +1,17 @@
-﻿using Microsoft.Extensions.FileSystemGlobbing.Internal;
-using System.Text.RegularExpressions;
-using Telegram.Bot.Types;
+﻿using System.Text.RegularExpressions;
 using VideoStickerBot.Bot.Handlers;
 using VideoStickerBot.Bot.Interfaces;
-using VideoStickerBot.Bot.KeyboardDto;
 using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
 using VideoStickerBot.Services.StickerPublishing;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
 {
     public class InputVideoDescriptionHandler : BaseMessageHandler
     {
-        const int DESC_MAX_LEN = 100;
-        VideoSticker sticker;
-        IStickerPublishing StickerPublishing;
+        private const int DESC_MAX_LEN = 100;
+        private VideoSticker sticker;
+        private IStickerPublishing StickerPublishing;
 
         public InputVideoDescriptionHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
@@ -49,7 +44,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
                 await StickerPublishing.Publish(sticker);
             else
                 await SendToReview();
-
         }
 
         private VideoSticker GetVideoSticker()
@@ -92,7 +86,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             sticker.Hashtags = string.Join(" ", hashTags.ToArray());
 
             DataStore.UpdateVideoSticker(sticker);
-
         }
 
         private async Task SendToReview()
@@ -110,7 +103,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             var replyMessage = await Telegram.SendTextMessage(replyText, privateChannel.Id, msgVideoNoteId,
                                                                 sticker.GetReviewKeybooardData());
 
-
             DataStore.AddChannelPost(new ChannelPost
             {
                 Channel = privateChannel,
@@ -127,14 +119,12 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             await Telegram.SendTextMessage("Отправлено на модерацию ✅", CurrentUser.ChatId);
         }
 
-
         private Channel GetPrivateChannel()
         {
             return DataStore.GetChannels()
                     .Where(x => x.ChannelType == (int)ChannelType.PRIVATE_REVIEW)
                     .First();
         }
-
 
         protected override BotState GetHandlerStateName()
         {

@@ -1,7 +1,6 @@
 ﻿using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
 using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.StickerStat;
 
 namespace VideoStickerBot.Services.StickerSorted
 {
@@ -10,7 +9,6 @@ namespace VideoStickerBot.Services.StickerSorted
         public SortEnum SortType => SortEnum.NEWEST;
 
         private readonly IDataStore dataStore;
-
 
         public NewestSorted(IDataStore dataStore)
         {

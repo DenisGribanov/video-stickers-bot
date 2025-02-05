@@ -2,9 +2,6 @@
 using VideoStickerBot.Bot.MessageHandlers;
 using VideoStickerBot.Bot.MessageHandlers.CallBackQuery;
 using VideoStickerBot.Bot.MessageHandlers.CallBackQuery.ReviewVideoSticker;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.StickerPublishing;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.BuilderHandlers
 {
@@ -22,7 +19,6 @@ namespace VideoStickerBot.Bot.BuilderHandlers
             handlers.Add(GetReviewerRejectedHandler());
             handlers.Add(GetReviewerAprovedHandler());
         }
-
 
         private IMessageHandler GetSortTypeEnterHandler()
         {

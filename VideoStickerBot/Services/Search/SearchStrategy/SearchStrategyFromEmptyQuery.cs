@@ -14,7 +14,7 @@ namespace VideoStickerBot.Services.Search.SearchStrategy
 
         public bool IsMatch()
         {
-            if(isMatch.HasValue) return isMatch.Value;
+            if (isMatch.HasValue) return isMatch.Value;
 
             isMatch = string.IsNullOrEmpty(Query);
 
@@ -23,7 +23,7 @@ namespace VideoStickerBot.Services.Search.SearchStrategy
 
         public IEnumerable<VideoSticker> Search(IEnumerable<VideoSticker> SourceStickers)
         {
-            if(!IsMatch()) return GetEmptyResult();
+            if (!IsMatch()) return GetEmptyResult();
 
             return SourceStickers;
         }

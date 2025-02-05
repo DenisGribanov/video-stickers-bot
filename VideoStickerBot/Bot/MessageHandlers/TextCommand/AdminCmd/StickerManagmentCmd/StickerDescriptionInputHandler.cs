@@ -58,8 +58,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
                         chPost.Channel.Id,
                         sticker.BuildPostDescriptionText(),
                         sticker.GetReviewKeybooardData());
-
-                logger.Info("update text from channel post success");
             }
 
             DataStore.UpdateVideoSticker(sticker);
@@ -69,7 +67,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
 
             ResetFromState(BotState.EDIT_DESCRIPTION);
         }
-
 
         protected override BotState GetHandlerStateName()
         {

@@ -3,6 +3,5 @@
     public interface IVideoResize
     {
         Task<byte[]> ConvertToSquareAsync(MemoryStream memoryStream);
-
     }
 }

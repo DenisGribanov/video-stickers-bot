@@ -1,19 +1,16 @@
 ﻿using VideoStickerBot.Bot.Handlers;
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Bot.KeyboardDto;
-using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery
 {
     public class SortTypeEnterHandler : BaseMessageHandler
     {
         private KeyboadBaseDto<StikerSortDto> KeyboadCallBackData;
+
         public SortTypeEnterHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
-
         }
 
         public override bool Match()
@@ -21,15 +18,12 @@ namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery
             if (isMatchForTelegramUpdate.HasValue)
                 return isMatchForTelegramUpdate.Value;
 
-
-
             if (TelegramUpdate.IsCallBackQuery && !string.IsNullOrEmpty(TelegramUpdate.CallBackData)
                 && GetKeyboardType(TelegramUpdate.CallBackData) == KeyboardTypeEnum.STICKER_SORT_SELECTED)
             {
                 KeyboadCallBackData = KeyboadBaseDto<StikerSortDto>.FromJson(TelegramUpdate.CallBackData);
 
                 isMatchForTelegramUpdate = true;
-
             }
             else
             {
@@ -54,6 +48,5 @@ namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery
         {
             return BotState.SORTING_SELECTED;
         }
-
     }
 }

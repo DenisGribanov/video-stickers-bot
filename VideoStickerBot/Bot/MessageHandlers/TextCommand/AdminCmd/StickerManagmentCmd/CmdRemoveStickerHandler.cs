@@ -1,12 +1,7 @@
-﻿using System.Text.RegularExpressions;
-using Telegram.Bot.Types;
-using VideoStickerBot.Bot.Handlers;
-using VideoStickerBot.Bot.Interfaces;
+﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Constants;
 using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagmentCmd
 {
@@ -33,7 +28,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
             if (!Match()) return;
 
             stickerId = DigitParse(TelegramUpdate.MessageText);
-            
+
             if (stickerId == null)
             {
                 await Telegram.SendTextMessage("Не удалось распознать команду." +
@@ -53,7 +48,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
             DeleteFromDataStore(sticker);
 
             await Telegram.SendTextMessage($"Видео успешно удалено", CurrentUser.ChatId);
-
         }
 
         private void DeleteFromDataStore(VideoSticker sticker)
@@ -62,7 +56,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
             sticker.DeletedDescription = $"Удалено пользователем {TelegramUpdate.Username}";
             sticker.DeleteDate = DateTime.Now;
             DataStore.UpdateVideoSticker(sticker);
-
         }
 
         private async Task DeleteChannelPost(VideoSticker sticker)
@@ -75,8 +68,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
                 {
                     await Telegram.DeleteMessage(Convert.ToInt64(post.ChannelId), post.ReplyMessageId.Value);
                 }
-
-                logger.Info($"DeleteChannelPost id {post.MessageId} Success");
             }
         }
 

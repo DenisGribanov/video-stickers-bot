@@ -1,7 +1,5 @@
 ﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Bot.MessageHandlers;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.BuilderHandlers
 {
@@ -15,7 +13,6 @@ namespace VideoStickerBot.Bot.BuilderHandlers
         {
             this.botSubSystems = botSubSystems;
         }
-
 
         public List<IMessageHandler> GetHandlers()
         {

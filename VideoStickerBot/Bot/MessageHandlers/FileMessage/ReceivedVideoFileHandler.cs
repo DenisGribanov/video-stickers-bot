@@ -1,10 +1,5 @@
-﻿using Telegram.Bot.Types;
-using VideoStickerBot.Bot.Handlers;
-using VideoStickerBot.Bot.Interfaces;
+﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
-using VideoStickerBot.Services.VideoResize;
 
 namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
 {
@@ -12,7 +7,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
     {
         public ReceivedVideoFileHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
-     
         }
 
         public override bool Match()
@@ -20,12 +14,10 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
             if (isMatchForTelegramUpdate.HasValue)
                 return isMatchForTelegramUpdate.Value;
 
-            isMatchForTelegramUpdate =  BotState.ADD_VIDEO == StateCurrentUser &&
-                                        TelegramFileType.VIDEO.Equals(TelegramUpdate.FileType) 
+            isMatchForTelegramUpdate = TelegramFileType.VIDEO.Equals(TelegramUpdate.FileType)
                                         && !CurrentUser.UploadDisabled;
 
             return isMatchForTelegramUpdate.Value;
-
         }
 
         public override async Task Handle()
@@ -35,7 +27,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
             if (!await Validate()) return;
 
             await ConvertToVideoNote();
-
         }
 
         protected override async Task<bool> Validate()
@@ -51,9 +42,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
             }
 
             return true;
-
         }
-
-
     }
 }

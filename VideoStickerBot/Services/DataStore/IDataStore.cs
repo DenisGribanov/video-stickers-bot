@@ -2,7 +2,7 @@
 
 namespace VideoStickerBot.Services.DataStore
 {
-    public interface IDataStore 
+    public interface IDataStore
     {
         List<VideoSticker> GetVideoStickers();
 
@@ -19,10 +19,15 @@ namespace VideoStickerBot.Services.DataStore
         int AddUser(TgUser tgUser);
 
         int UpdateUser(TgUser tgUser);
+
         List<TgUser> GetUsers();
+
         bool IsExistUsers(long chatId);
+
         int AddCheckingVideo(CheckingVideoSticker checkingVideoSticker);
+
         int AddChannelPost(ChannelPost channelPost);
+
         List<Channel> GetChannels();
     }
 }

@@ -1,8 +1,5 @@
-﻿using Telegram.Bot.Types;
-using VideoStickerBot.Bot.Handlers;
-using VideoStickerBot.Bot.Interfaces;
+﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Constants;
-using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
 
 namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagmentCmd

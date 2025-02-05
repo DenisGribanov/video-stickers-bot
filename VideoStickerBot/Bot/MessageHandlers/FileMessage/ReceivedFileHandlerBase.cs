@@ -3,7 +3,6 @@ using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Enums;
 using VideoStickerBot.Services.VideoResize;
 
-
 namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
 {
     public abstract class ReceivedFileHandlerBase : BaseMessageHandler
@@ -13,6 +12,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
         protected const int MAX_FILE_SIZE = 10000000;
 
         protected readonly IVideoResize videoResize;
+
         public ReceivedFileHandlerBase(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
             videoResize = botSubSystems.VideoResize;
@@ -30,7 +30,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
                 MessageId = messageId,
                 FileUniqueId = fileUniqueId,
                 AuthorChat = CurrentUser
-
             });
         }
 
@@ -57,7 +56,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
                 return false;
             }
 
-            if(TelegramUpdate.FileSize.HasValue && TelegramUpdate.FileSize.Value > MAX_FILE_SIZE)
+            if (TelegramUpdate.FileSize.HasValue && TelegramUpdate.FileSize.Value > MAX_FILE_SIZE)
             {
                 await Telegram.SendTextMessage($"Ошибка ⚠️ Максимальный размер видео 10 мб.", CurrentUser.ChatId);
                 return false;
@@ -95,13 +94,11 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
             SaveVideoInfo(message.FileId, message.FileUniqueId, message.MessageId.Value);
 
             await SendMessageRequestingDescription();
-
         }
 
         protected async Task DownloadVideoFile(string fileId, MemoryStream memoryStream)
         {
             await Telegram.GetFile(fileId, memoryStream);
-            logger.Info($"Download File {TelegramUpdate.FileId} succes");
         }
 
         protected async Task SaveFile(byte[] bytes, string fileName, string path = null)
@@ -113,22 +110,16 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
                 string pathSave = path == null ? fileName : Path.Combine(path, fileName);
 
                 await System.IO.File.WriteAllBytesAsync(pathSave, bytes);
-
-                logger.Info($"SaveFile {pathSave} succes");
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при сохранении файла");
-                logger.Error(ex);
+                throw new Exception("Ошибка при сохранении файла");
             }
-
         }
-
 
         protected override BotState GetHandlerStateName()
         {
             return BotState.VIDEO_UPLOADED;
         }
-
     }
 }

@@ -23,7 +23,9 @@ namespace VideoStickerBot.Services.StickerSorted
         {
             var stickers = dataStore.GetVideoStickers();
 
-            var stats = TotalStat.Get().OrderByDescending(x => x.TotalClick).Select(x => x.VideoSticker).ToList();
+            var stats = TotalStat.Get().OrderByDescending(x => x.TotalClick)
+                                    .Where(x => x.VideoSticker != null)
+                                    .Select(x => x.VideoSticker).ToList();
 
             HashSet<long> ids = stats.Select(x => x.Id).ToHashSet();
 

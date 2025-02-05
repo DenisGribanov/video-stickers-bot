@@ -23,10 +23,8 @@ namespace VideoStickerBot.Services.StickerStat
 
             if (sticker == null) return;
 
-
             if (!clicked.ContainsKey(UserChatId))
                 clicked.Add(UserChatId, new List<UserVideoClickedInfo>());
-
 
             var sorted = clicked[UserChatId].Where(x => x.Video.Id == stickerId).FirstOrDefault();
 
@@ -34,7 +32,6 @@ namespace VideoStickerBot.Services.StickerStat
                 sorted.UserClickCount++;
             else
                 clicked[UserChatId].Add(new UserVideoClickedInfo { UserClickCount = 1, Video = sticker });
-
 
             var stat = dataStore.GetVideoStickersStats().Where(x => x.StickerId == stickerId && x.UserChatId == UserChatId).FirstOrDefault();
             if (stat != null)
@@ -59,7 +56,6 @@ namespace VideoStickerBot.Services.StickerStat
                 return clicked[UserChatId];
             else
                 return dataStore.GetVideoStickers().Select(x => new UserVideoClickedInfo(x, 0)).ToList();
-
         }
 
         public void Load()
@@ -71,12 +67,8 @@ namespace VideoStickerBot.Services.StickerStat
                 if (!clicked.ContainsKey(stat.UserChatId))
                     clicked.Add(stat.UserChatId, new List<UserVideoClickedInfo>());
 
-
                 clicked[stat.UserChatId].Add(new UserVideoClickedInfo { UserClickCount = stat.ClickCount, Video = stat.Sticker });
-
             }
-
         }
-
     }
 }

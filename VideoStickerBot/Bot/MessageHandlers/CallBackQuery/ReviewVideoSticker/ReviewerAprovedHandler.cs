@@ -1,12 +1,6 @@
-﻿using Telegram.Bot.Types;
-using VideoStickerBot.Bot.Handlers;
-using VideoStickerBot.Bot.Interfaces;
-using VideoStickerBot.Bot.KeyboardDto;
-using VideoStickerBot.Database;
+﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
 using VideoStickerBot.Services.StickerPublishing;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery.ReviewVideoSticker
 {
@@ -50,9 +44,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery.ReviewVideoSticker
             await StickerPublishing.Publish(GetVideoStickers());
 
             SaveReviewResult();
-
         }
-
 
         protected override BotState GetHandlerStateName()
         {

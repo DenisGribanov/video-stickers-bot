@@ -2,6 +2,6 @@
 {
     public interface IUserActionHistory
     {
-         Task Write(string userState, string update);
+        Task Write(string userState, string update);
     }
 }

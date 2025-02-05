@@ -38,6 +38,5 @@ namespace VideoStickerBot.Bot.KeyboardDto
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<KeyboadBaseDto<T>>(json);
         }
-
     }
 }

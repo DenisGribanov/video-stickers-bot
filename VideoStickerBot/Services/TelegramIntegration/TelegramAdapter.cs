@@ -1,30 +1,19 @@
-﻿using Telegram.Bot;
-using VideoStickerBot.Database;
-using Telegram.Bot.Types;
-using NLog;
-using System.Text;
+﻿using System.Text;
+using Telegram.Bot;
 using Telegram.Bot.Types.InlineQueryResults;
-using RestSharp;
-using System.Collections.Concurrent;
-using VideoStickerBot.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using Microsoft.Extensions.Primitives;
-using System.Collections.Generic;
 using VideoStickerBot.Constants;
 
 namespace VideoStickerBot.Services.TelegramIntegration
 {
     public class TelegramAdapter : ITelegram
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         private readonly ITelegramBotClient BotClient;
 
         public TelegramAdapter(ITelegramBotClient botClient)
         {
             BotClient = botClient;
         }
-
 
         public async Task AnswerInlineQueryAsync(IEnumerable<TelegramInlineQueryResultVideo> result, string inlineQueryId, string? nextOffset = null)
         {
@@ -35,7 +24,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
                 0,
                 true, nextOffset, "Все кружочки", BotCommands.COMPILATION.Replace("/", ""));
         }
-
 
         public async Task<ITelegramUpdateMessage> SendTextMessage(string text,
             long destanationChatId,
@@ -49,8 +37,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
 
             return new TelegramUpdateMessageAdapter(msg);
         }
-
-
 
         public async Task<ITelegramUpdateMessage> ForwardMessage(long destanationChatId, long fromChatId, int messageId)
         {
@@ -66,9 +52,7 @@ namespace VideoStickerBot.Services.TelegramIntegration
             }
             catch
             {
-
             }
-
         }
 
         public async Task EditMessageReplyMarkup(int messageId,
@@ -90,15 +74,11 @@ namespace VideoStickerBot.Services.TelegramIntegration
                 {
                     await BotClient.EditMessageReplyMarkupAsync(destinationChatId, messageId, inlineKeyboardMarkup);
                 }
-
-
             }
-            catch (Exception ex)
+            catch
             {
-                logger.Error(ex);
             }
         }
-
 
         public async Task<MemoryStream> GetFile(string fileId, MemoryStream destination)
         {
@@ -114,7 +94,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
 
             return new TelegramUpdateMessageAdapter(message);
         }
-
 
         public async Task<ITelegramUpdateMessage> SendVideoNote(string fileId, long destanationChatId)
         {
@@ -157,8 +136,7 @@ namespace VideoStickerBot.Services.TelegramIntegration
             {
                 await BotClient.DeleteMessageAsync(chatId, messageId);
             }
-            catch (Exception ex) { logger.Error(ex); }
-
+            catch { }
         }
 
         public async Task<ITelegramUpdateMessage> SendTextMessage(string text, long destanationChatId, List<List<KeyValuePair<string, string>>> inlineData)
@@ -184,9 +162,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
             return new TelegramUpdateMessageAdapter(msg);
         }
 
-
-
-
         private InlineKeyboardMarkup convertToInlineKeyboardMarkup(Dictionary<string, string> inlineData)
         {
             if (inlineData == null || inlineData.Count == 0) return null;
@@ -203,8 +178,6 @@ namespace VideoStickerBot.Services.TelegramIntegration
             }
 
             InlineKeyboardMarkup inlineKeyboardMarkup = new(buttons);
-
-
 
             return inlineKeyboardMarkup;
         }
@@ -226,6 +199,5 @@ namespace VideoStickerBot.Services.TelegramIntegration
 
             return inline;
         }
-
     }
 }

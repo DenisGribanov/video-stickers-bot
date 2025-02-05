@@ -2,7 +2,7 @@
 {
     public class TelegramInlineQueryResultVideo
     {
-        public string UniqueId { get; set; } 
+        public string UniqueId { get; set; }
         public string VideoUrl { get; set; }
 
         public string ThumbUrl { get; set; }

@@ -10,14 +10,13 @@ namespace VideoStickerBot.Services.Search.SearchStrategy
 
         public SearchStrategyEnum StrategyEnum => SearchStrategyEnum.FROM_ALL_FIELDS;
 
-
         string ISearchStrategy.Query => base.Query;
 
         public bool IsMatch()
-        {   
-            if(isMatch.HasValue) return isMatch.Value;
+        {
+            if (isMatch.HasValue) return isMatch.Value;
 
-            isMatch = !string.IsNullOrEmpty(Query) 
+            isMatch = !string.IsNullOrEmpty(Query)
                             && !Query.Contains('#')
                             && !Query.Contains('$')
                             && !videoStickerId.HasValue;
@@ -26,8 +25,8 @@ namespace VideoStickerBot.Services.Search.SearchStrategy
         }
 
         public IEnumerable<VideoSticker> Search(IEnumerable<VideoSticker> SourceStickers)
-        {   
-            if(!IsMatch()) return GetEmptyResult();
+        {
+            if (!IsMatch()) return GetEmptyResult();
 
             var result = SourceStickers.Where(x =>
                         (x.Description != null && x.Description.ToLower().Contains(Query.Trim().ToLower()))

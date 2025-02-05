@@ -2,8 +2,6 @@
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services;
-using VideoStickerBot.Services.DataStore;
 using VideoStickerBot.Services.Search;
 using VideoStickerBot.Services.StickerSorted;
 using VideoStickerBot.Services.TelegramIntegration;
@@ -12,18 +10,18 @@ namespace VideoStickerBot.Bot.MessageHandlers.InlineQuery
 {
     public class InlineQueryHandler : BaseMessageHandler
     {
-        const int MAX_RESULT = 50;
-        readonly List<IStickerSort> StickerSortsStrategy = new List<IStickerSort>();
+        private const int MAX_RESULT = 50;
+        private readonly List<IStickerSort> StickerSortsStrategy = new List<IStickerSort>();
         private IEnumerable<VideoSticker> videoStickersSearchResult;
 
-        ISearchSticker searchSticker { get; set; }
+        private ISearchSticker searchSticker { get; set; }
+
         public InlineQueryHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
             StickerSortsStrategy.Add(new NewestSorted(botSubSystems.DataStore));
             StickerSortsStrategy.Add(new PopularSorted(botSubSystems.DataStore));
             StickerSortsStrategy.Add(new PersonSorted(botSubSystems.DataStore, CurrentUser.ChatId));
             StickerSortsStrategy.Add(new OwnSorted(botSubSystems.DataStore, CurrentUser.ChatId));
-
         }
 
         public override bool Match()
@@ -34,15 +32,14 @@ namespace VideoStickerBot.Bot.MessageHandlers.InlineQuery
             isMatchForTelegramUpdate = TelegramUpdate.IsInlineQuery;
 
             return isMatchForTelegramUpdate.Value;
-
         }
 
-        public async override Task Handle()
+        public override async Task Handle()
         {
             if (!Match()) return;
 
             int? offset = DigitParse(TelegramUpdate.InlineQueryOffset);
-            int currentPage = offset.HasValue? offset.Value : 0;    
+            int currentPage = offset.HasValue ? offset.Value : 0;
 
             searchSticker = new SearchSticker(GetStickerSortStrategy());
             videoStickersSearchResult = searchSticker.Search(TelegramUpdate.InlineQueryText).Where(x => x.IsPublished() && !x.Deleted);
@@ -53,21 +50,18 @@ namespace VideoStickerBot.Bot.MessageHandlers.InlineQuery
 
             int indexStart = GetStartIndexRange(currentPage, MAX_RESULT);
             int rangeCount = GetRangeCount(indexStart, searhResultCount);
-            int? nextPageIndex = GetNextPageIndex(currentPage, MAX_RESULT, searhResultCount);            
+            int? nextPageIndex = GetNextPageIndex(currentPage, MAX_RESULT, searhResultCount);
 
             var result = videoStickersSearchResult.ToList().GetRange(indexStart, rangeCount).Take(MAX_RESULT);
 
-            logger.Info($"{TelegramUpdate.Username} query = '{TelegramUpdate.InlineQueryText}' | indexStart = {indexStart} | rangeCount = {rangeCount} | nextPageIndex = {nextPageIndex} | result count = {result.Count()}");
-
             string nextOffset = nextPageIndex.HasValue ? nextPageIndex.ToString() : null;
-            
-            await Telegram.AnswerInlineQueryAsync(result.Select(x => ConvertToInlineResult(x)), TelegramUpdate.InlineQueryId, nextOffset);
 
+            await Telegram.AnswerInlineQueryAsync(result.Select(x => ConvertToInlineResult(x)), TelegramUpdate.InlineQueryId, nextOffset);
         }
 
         private int GetStartIndexRange(int? currentPage, int pageSize)
         {
-            if(!currentPage.HasValue)
+            if (!currentPage.HasValue)
             {
                 return 0;
             }
@@ -84,13 +78,13 @@ namespace VideoStickerBot.Bot.MessageHandlers.InlineQuery
 
         private int? GetNextPageIndex(int currentPageIndex, int pageSize, int arraySize)
         {
-            if(currentPageIndex * pageSize + pageSize >= arraySize)
+            if (currentPageIndex * pageSize + pageSize >= arraySize)
             {
                 return null;
             }
             else
             {
-                return currentPageIndex+=1;
+                return currentPageIndex += 1;
             }
         }
 

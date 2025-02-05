@@ -1,6 +1,4 @@
-﻿using NLog;
-using System.Collections.Concurrent;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Bot.KeyboardDto;
 using VideoStickerBot.Bot.MessageHandlers;
@@ -13,8 +11,6 @@ namespace VideoStickerBot.Bot.Handlers
 {
     public abstract class BaseMessageHandler : IMessageHandler
     {
-        protected static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         protected readonly ITelegram Telegram;
 
         protected readonly IDataStore DataStore;
@@ -38,7 +34,9 @@ namespace VideoStickerBot.Bot.Handlers
         }
 
         public abstract bool Match();
+
         public abstract Task Handle();
+
         protected abstract BotState GetHandlerStateName();
 
         public BotState? UpdateStateForCurrentUser()

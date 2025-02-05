@@ -1,8 +1,6 @@
 ﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Bot.MessageHandlers;
 using VideoStickerBot.Bot.MessageHandlers.InlineQuery;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.BuilderHandlers
 {
@@ -19,6 +17,7 @@ namespace VideoStickerBot.Bot.BuilderHandlers
             handlers.Add(AddInlineQueryHandler());
             handlers.Add(AddInlineResultHandler());
         }
+
         private IMessageHandler AddInlineQueryHandler()
         {
             return new InlineQueryHandler(botSubSystems);

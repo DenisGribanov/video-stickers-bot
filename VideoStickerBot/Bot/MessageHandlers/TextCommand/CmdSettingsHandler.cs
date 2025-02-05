@@ -2,10 +2,7 @@
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Bot.KeyboardDto;
 using VideoStickerBot.Constants;
-using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
 {
@@ -13,7 +10,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
     {
         public CmdSettingsHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
-
         }
 
         public override bool Match()
@@ -30,13 +26,11 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
         {
             if (!Match()) return;
 
-
             await Telegram.SendTextMessage("__Выберите вариант сортировки кружочков в поисковике__:" +
                 "\n\n1. По полурности среди всех пользователей 👨‍👩‍👦‍👦" +
                 "\n\n2. По полурности у вас 💕 (выше в списке будут те кружочки, которые вы кликали чаще всего)" +
                 "\n\n3. По дате добавления 🗓(вверху будут самые новые)" +
                 "\n\n4. Сначала добавленные мной 👤", TelegramUpdate.ChatId.Value, null, GeKeyBoardData());
-
         }
 
         private Dictionary<string, string> GeKeyBoardData()

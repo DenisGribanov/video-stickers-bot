@@ -1,13 +1,9 @@
-﻿using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types;
-using VideoStickerBot.Database;
-using VideoStickerBot.Enums;
+﻿using VideoStickerBot.Database;
 
 namespace VideoStickerBot.Services.Search
 {
     public interface ISearchSticker
     {
         IEnumerable<VideoSticker> Search(string query);
-
     }
 }

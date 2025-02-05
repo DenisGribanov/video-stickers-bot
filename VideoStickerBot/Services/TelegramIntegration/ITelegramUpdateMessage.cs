@@ -35,7 +35,8 @@ namespace VideoStickerBot.Services.TelegramIntegration
         string? CallBackData { get; }
         string? InlineQueryId { get; }
         string? CallBackQueryId { get; }
-
         long? ChatId { get; }
+
+        long? BotAddedToChatId { get; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using VideoStickerBot.Bot.Handlers;
 using VideoStickerBot.Bot.Interfaces;
-using VideoStickerBot.Bot.KeyboardDto;
 using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
 
@@ -12,6 +11,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
         protected long? stickerId;
         protected VideoSticker sticker;
         private static readonly ConcurrentDictionary<BotState, ConcurrentDictionary<long, long>> states = new ConcurrentDictionary<BotState, ConcurrentDictionary<long, long>> { };
+
         public CmdStickerManagmentBaseHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
         }
@@ -23,14 +23,14 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
 
         protected void SaveVideoStickerIdFromState(BotState botState, long stickerId)
         {
-            if(!states.ContainsKey(botState))
+            if (!states.ContainsKey(botState))
             {
                 states.TryAdd(botState, new ConcurrentDictionary<long, long>());
             }
 
             var dict = states[botState];
 
-            if(!dict.ContainsKey(CurrentUser.ChatId))
+            if (!dict.ContainsKey(CurrentUser.ChatId))
             {
                 dict.TryAdd(CurrentUser.ChatId, stickerId);
             }
@@ -50,7 +50,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
             var dict = states[botState];
 
             return dict.ContainsKey(CurrentUser.ChatId) ? dict[CurrentUser.ChatId] : null;
-
         }
 
         protected bool ResetFromState(BotState botState)
@@ -62,9 +61,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
 
             var dict = states[botState];
 
-           return dict.TryRemove(CurrentUser.ChatId, out _);
-
+            return dict.TryRemove(CurrentUser.ChatId, out _);
         }
-
     }
 }

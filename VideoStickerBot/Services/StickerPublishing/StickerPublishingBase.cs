@@ -1,7 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using NLog;
-using Telegram.Bot.Types;
-using VideoStickerBot.Database;
+﻿using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
 using VideoStickerBot.Services.DataStore;
 using VideoStickerBot.Services.TelegramIntegration;
@@ -10,8 +7,6 @@ namespace VideoStickerBot.Services.StickerPublishing
 {
     public abstract class StickerPublishingBase : IStickerPublishing
     {
-        protected static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         protected readonly ITelegram Telegram;
         protected readonly IDataStore DataStore;
         protected readonly ITelegramUpdateMessage TelegramUpdate;
@@ -40,7 +35,6 @@ namespace VideoStickerBot.Services.StickerPublishing
             var descriptionMessageId = await SendReplyTextMessage(videoNotePublicMessageId);
 
             SavePublicChannelPost(descriptionMessageId);
-
         }
 
         private void SavePublicChannelPost(int ReplyMessageId)
@@ -63,11 +57,10 @@ namespace VideoStickerBot.Services.StickerPublishing
             try
             {
                 var message = await Telegram.ForwardMessage(publicChannel.Id, sticker.AuthorChatId, sticker.MessageId);
-                logger.Info("SendVideoNoteToPublicChannel Success (ForwardMessage)");
                 msgId = message.MessageId.Value;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                logger.Error(ex);
                 var message = await Telegram.SendVideoNote(sticker.FileId, publicChannel.Id);
                 msgId = message.MessageId.Value;
             }

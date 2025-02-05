@@ -4,7 +4,6 @@ using VideoStickerBot.Bot.MessageHandlers.TextCommand;
 using VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd;
 using VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagmentCmd;
 
-
 namespace VideoStickerBot.Bot.BuilderHandlers
 {
     public class BuilderForTextCommand : BuilderHandlerBase
@@ -31,6 +30,8 @@ namespace VideoStickerBot.Bot.BuilderHandlers
             handlers.Add(CmdCompilationHandler());
             handlers.Add(CmdCompilationByTextQueryHandler());
             handlers.Add(CmdHelpHandler());
+            handlers.Add(CmdFreshHandler());
+            handlers.Add(CmdBestHandler());
         }
 
         private IMessageHandler CmdAddHandler()
@@ -90,7 +91,7 @@ namespace VideoStickerBot.Bot.BuilderHandlers
 
         private IMessageHandler CmdCompilationHandler()
         {
-            return new CmdCompilationHandler(botSubSystems); 
+            return new CmdCompilationHandler(botSubSystems);
         }
 
         private IMessageHandler CmdCompilationByTextQueryHandler()
@@ -103,5 +104,14 @@ namespace VideoStickerBot.Bot.BuilderHandlers
             return new CmdHelpHandler(botSubSystems);
         }
 
+        private IMessageHandler CmdFreshHandler()
+        {
+            return new CmdFreshHandler(botSubSystems);
+        }
+
+        private IMessageHandler CmdBestHandler()
+        {
+            return new CmdBestHandler(botSubSystems);
+        }
     }
 }

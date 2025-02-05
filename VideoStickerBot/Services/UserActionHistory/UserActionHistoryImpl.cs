@@ -28,12 +28,7 @@ namespace VideoStickerBot.Services.UserActionHistory
             }
             catch
             {
-
             }
-
-
-
-          
         }
     }
 }

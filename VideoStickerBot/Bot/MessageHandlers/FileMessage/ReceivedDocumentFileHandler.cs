@@ -1,15 +1,12 @@
 ﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.VideoResize;
 
 namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
 {
     public class ReceivedDocumentFileHandler : ReceivedFileHandlerBase
     {
-
         public ReceivedDocumentFileHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
-
         }
 
         public override bool Match()
@@ -33,7 +30,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
             await ConvertToVideoNote();
         }
 
-
         protected override async Task<bool> Validate()
         {
             var res = await base.Validate();
@@ -53,7 +49,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
             }
 
             return true;
-
         }
 
         protected override BotState GetHandlerStateName()

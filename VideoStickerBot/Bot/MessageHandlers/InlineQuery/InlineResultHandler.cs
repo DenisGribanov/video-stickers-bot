@@ -1,15 +1,14 @@
 ﻿using VideoStickerBot.Bot.Handlers;
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
 using VideoStickerBot.Services.StickerStat;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.InlineQuery
 {
     public class InlineResultHandler : BaseMessageHandler
     {
         private readonly List<IStat> Stats = new List<IStat>();
+
         public InlineResultHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
         }
@@ -24,7 +23,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.InlineQuery
             return isMatchForTelegramUpdate.Value;
         }
 
-        public async override Task Handle()
+        public override async Task Handle()
         {
             if (!Match()) return;
 
@@ -37,7 +36,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.InlineQuery
                 stat.Load();
                 stat.Update(stickerId);
             }
-
         }
 
         private void InitStats()

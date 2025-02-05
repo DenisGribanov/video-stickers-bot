@@ -1,17 +1,12 @@
-﻿using VideoStickerBot.Bot.Handlers;
-using VideoStickerBot.Bot.Interfaces;
+﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
 {
     public class ReceivedVideoNoteFileHandler : ReceivedFileHandlerBase
     {
-
         public ReceivedVideoNoteFileHandler(IBotSubSystems botSubSystems) : base(botSubSystems)
         {
-
         }
 
         public override bool Match()
@@ -20,11 +15,10 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
                 return isMatchForTelegramUpdate.Value;
 
             isMatchForTelegramUpdate = BotState.ADD_VIDEO == StateCurrentUser
-                                       && TelegramFileType.VIDEO_NOTE.Equals(TelegramUpdate.FileType) 
+                                       && TelegramFileType.VIDEO_NOTE.Equals(TelegramUpdate.FileType)
                                        && !CurrentUser.UploadDisabled;
 
             return isMatchForTelegramUpdate.Value;
-
         }
 
         public override async Task Handle()
@@ -35,9 +29,8 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
 
             using (MemoryStream memoryStream = new MemoryStream())
             {
+                await Telegram.SendTextMessage("Работаю 😊😊😊", CurrentUser.ChatId);
 
-                await Telegram.SendTextMessage("Работаю 😊😊😊", CurrentUser.ChatId);  
-                
                 await DownloadVideoFile(TelegramUpdate.FileId, memoryStream);
 
                 await SaveFile(memoryStream.ToArray(), TelegramUpdate.FileId + ".mp4", Variables.GetInstance().CACHE_FOLDER);
@@ -48,9 +41,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.FileMessage
                 SaveVideoInfo(message.FileId, message.FileUniqueId, message.MessageId.Value);
             }
 
-
             await SendMessageRequestingDescription();
-
         }
 
         protected override BotState GetHandlerStateName()

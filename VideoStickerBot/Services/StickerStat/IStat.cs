@@ -3,6 +3,7 @@
     public interface IStat
     {
         void Load();
+
         void Update(long stickerId);
     }
 }

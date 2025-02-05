@@ -3,8 +3,6 @@ using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Bot.KeyboardDto;
 using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery.ReviewVideoSticker
 {
@@ -13,10 +11,10 @@ namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery.ReviewVideoSticker
         protected KeyboadBaseDto<ReviewResultDto> KeyboadCallBackData { get; private set; }
         private VideoSticker sticker;
         protected abstract VideoReviewEnum VideoReviewAction { get; }
-        protected ReviewBaseHandler(IBotSubSystems botSubSystems) 
+
+        protected ReviewBaseHandler(IBotSubSystems botSubSystems)
             : base(botSubSystems)
         {
-
         }
 
         public override bool Match()
@@ -26,7 +24,7 @@ namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery.ReviewVideoSticker
 
             if (!TelegramUpdate.IsCallBackQuery || string.IsNullOrEmpty(TelegramUpdate.CallBackData))
             {
-                isMatchForTelegramUpdate =  false;
+                isMatchForTelegramUpdate = false;
                 return isMatchForTelegramUpdate.Value;
             }
 
@@ -42,7 +40,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.CallBackQuery.ReviewVideoSticker
                 isMatchForTelegramUpdate = false;
                 return isMatchForTelegramUpdate.Value;
             }
-
         }
 
         protected VideoSticker GetVideoStickers()

@@ -2,17 +2,14 @@
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Constants;
 using VideoStickerBot.Enums;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
 
 namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
 {
     public class CmdAllHandler : BaseMessageHandler
     {
-        public CmdAllHandler(IBotSubSystems botSubSystems) 
+        public CmdAllHandler(IBotSubSystems botSubSystems)
             : base(botSubSystems)
         {
-
         }
 
         public override bool Match()
@@ -25,13 +22,12 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             return isMatchForTelegramUpdate.Value;
         }
 
-        public async override Task Handle()
+        public override async Task Handle()
         {
             if (!Match()) return;
 
-            await Telegram.SendTextMessage(TextWithUrl("Кружочки для переговоров",Variables.GetInstance().PUBLIC_CHANNEL_URL),
+            await Telegram.SendTextMessage(TextWithUrl("Кружочки для переговоров", Variables.GetInstance().PUBLIC_CHANNEL_URL),
                                         TelegramUpdate.ChatId.Value);
-
         }
 
         protected override BotState GetHandlerStateName()

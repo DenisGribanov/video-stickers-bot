@@ -1,6 +1,4 @@
-﻿using Telegram.Bot.Types;
-using VideoStickerBot.Database;
-using VideoStickerBot.Enums;
+﻿using VideoStickerBot.Database;
 using VideoStickerBot.Services.DataStore;
 using VideoStickerBot.Services.TelegramIntegration;
 
@@ -12,7 +10,6 @@ namespace VideoStickerBot.Services.StickerPublishing
             ITelegramUpdateMessage telegramUpdate,
             IDataStore dataStore) : base(telegram, telegramUpdate, dataStore)
         {
-
         }
 
         public override async Task Publish(VideoSticker _sticker)
@@ -30,15 +27,12 @@ namespace VideoStickerBot.Services.StickerPublishing
             await SendNotifyToPrivateChannel();
 
             await SendNotifyToAuthor();
-
         }
-
 
         private async Task SendNotifyToPrivateChannel()
         {
             await Telegram.SendTextMessage($"Пользователь @{TelegramUpdate.Username} добавил кружочек:" +
                                             $"\n\n[Посмотреть в канале]({UrlPublicChannelPost()})", privateChannel.Id);
         }
-
     }
 }

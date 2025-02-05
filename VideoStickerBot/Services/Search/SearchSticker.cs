@@ -1,9 +1,6 @@
-﻿using System.Text;
-using VideoStickerBot.Database;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.StickerSorted;
-using System.Text.RegularExpressions;
+﻿using VideoStickerBot.Database;
 using VideoStickerBot.Services.Search.SearchStrategy;
+using VideoStickerBot.Services.StickerSorted;
 
 namespace VideoStickerBot.Services.Search
 {
@@ -36,8 +33,7 @@ namespace VideoStickerBot.Services.Search
                 new SearchStrategyFromCashTag(query)
             };
 
-            return searchStrategies.Where(x=>x.IsMatch()).FirstOrDefault();
+            return searchStrategies.Where(x => x.IsMatch()).FirstOrDefault();
         }
-
     }
 }

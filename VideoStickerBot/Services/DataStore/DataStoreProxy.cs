@@ -1,5 +1,4 @@
-﻿using NLog;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using VideoStickerBot.Database;
 
 namespace VideoStickerBot.Services.DataStore
@@ -15,8 +14,6 @@ namespace VideoStickerBot.Services.DataStore
         private static readonly ConcurrentDictionary<long, TgUser> Users = new();
 
         private static readonly List<Channel> channels = new List<Channel>();
-
-        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public DataStoreProxy(VideoStikersBotContext context)
         {
@@ -43,13 +40,10 @@ namespace VideoStickerBot.Services.DataStore
             if (resultSave > 0)
             {
                 videoStickers.Add(videoSticker);
-                logger.Info($"AddVideoSticker fileId =  {videoSticker.FileId} | duration = {videoSticker.VideoDuration}");
             }
 
             return resultSave;
-
         }
-
 
         public List<VideoSticker> GetVideoStickers()
         {
@@ -75,7 +69,6 @@ namespace VideoStickerBot.Services.DataStore
                 {
                     videoStickersStats.Add(stat);
                 }
-
             }
 
             return videoStickersStats;
@@ -87,7 +80,6 @@ namespace VideoStickerBot.Services.DataStore
 
             if (cacheItem == null)
                 throw new Exception($"VideoSticker id {videoStickers.Id} Not Found");
-
 
             return DataStore.UpdateVideoSticker(videoStickers);
         }
@@ -109,7 +101,6 @@ namespace VideoStickerBot.Services.DataStore
             if (saveResult > 0)
             {
                 Users.TryAdd(tgUser.ChatId, tgUser);
-                logger.Info($"AddUser Id = {tgUser.ChatId}, userName = {tgUser.UserName}");
             }
 
             return saveResult;
@@ -152,7 +143,6 @@ namespace VideoStickerBot.Services.DataStore
             return Users.ContainsKey(chatId);
         }
 
-
         public int AddCheckingVideo(CheckingVideoSticker checkingVideoSticker)
         {
             var res = DataStore.AddCheckingVideo(checkingVideoSticker);
@@ -164,7 +154,6 @@ namespace VideoStickerBot.Services.DataStore
             return res;
         }
 
-
         public int AddChannelPost(ChannelPost channelPost)
         {
             var resultSave = DataStore.AddChannelPost(channelPost);
@@ -175,7 +164,6 @@ namespace VideoStickerBot.Services.DataStore
 
             return resultSave;
         }
-
 
         public List<Channel> GetChannels()
         {

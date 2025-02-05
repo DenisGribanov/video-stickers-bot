@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VideoStickerBot.Database;
 
-
 namespace VideoStickerBot.Services.DataStore
 {
     public class DataStore : IDataStore
@@ -26,7 +25,6 @@ namespace VideoStickerBot.Services.DataStore
             return context.SaveChanges();
         }
 
-
         public List<VideoSticker> GetVideoStickers()
         {
             return context.VideoStickers.Where(x => !x.Deleted)
@@ -36,7 +34,6 @@ namespace VideoStickerBot.Services.DataStore
                 .Include(x => x.CheckingVideoStickers)
                 .ThenInclude(x => x.ModeratorChat)
                 .ToList();
-
         }
 
         public List<VideoStickersStat> GetVideoStickersStats()
@@ -56,7 +53,6 @@ namespace VideoStickerBot.Services.DataStore
             return context.SaveChanges();
         }
 
-
         public int AddUser(TgUser tgUser)
         {
             context.Entry(tgUser).State = EntityState.Added;
@@ -74,7 +70,6 @@ namespace VideoStickerBot.Services.DataStore
             return context.TgUsers.ToList();
         }
 
-
         public bool IsExistUsers(long chatId)
         {
             return context.TgUsers.Any(x => x.ChatId == chatId);
@@ -86,7 +81,6 @@ namespace VideoStickerBot.Services.DataStore
             return context.SaveChanges();
         }
 
-
         public int AddChannelPost(ChannelPost channelPost)
         {
             context.Entry(channelPost).State = EntityState.Added;
@@ -94,11 +88,9 @@ namespace VideoStickerBot.Services.DataStore
             return result;
         }
 
-
         public List<Channel> GetChannels()
         {
             return context.Channels.Where(x => !x.Deleted).ToList();
         }
-
     }
 }

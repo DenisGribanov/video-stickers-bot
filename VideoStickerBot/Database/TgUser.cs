@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Telegram.Bot.Types;
-using VideoStickerBot.Enums;
+﻿using VideoStickerBot.Enums;
 
 namespace VideoStickerBot.Database
 {

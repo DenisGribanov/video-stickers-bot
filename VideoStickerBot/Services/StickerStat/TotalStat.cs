@@ -33,9 +33,7 @@ namespace VideoStickerBot.Services.StickerStat
 
                 int summClick = statisticksClick.Where(x => x.StickerId == stat.StickerId).Select(x => x.ClickCount).Sum();
                 totalStat.Add(stat.StickerId, new VideoTotalStat() { TotalClick = summClick, VideoSticker = stat.Sticker });
-
             }
-
         }
 
         public List<VideoTotalStat> Get()

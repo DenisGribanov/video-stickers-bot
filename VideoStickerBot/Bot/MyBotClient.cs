@@ -1,10 +1,5 @@
-﻿using NLog;
-using VideoStickerBot.Bot.BuilderHandlers;
+﻿using VideoStickerBot.Bot.BuilderHandlers;
 using VideoStickerBot.Bot.Interfaces;
-using VideoStickerBot.Bot.MessageHandlers.CallBackQuery;
-using VideoStickerBot.Bot.MessageHandlers.FileMessage;
-using VideoStickerBot.Bot.MessageHandlers.InlineQuery;
-using VideoStickerBot.Bot.MessageHandlers.TextCommand;
 using VideoStickerBot.Enums;
 using VideoStickerBot.Services.DataStore;
 using VideoStickerBot.Services.TelegramIntegration;
@@ -15,8 +10,6 @@ namespace VideoStickerBot.Bot
 {
     public class MyBotClient
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         private readonly ITelegram telegram;
 
         private readonly ITelegramUpdateMessage telegramUpdateMessage;
@@ -28,6 +21,7 @@ namespace VideoStickerBot.Bot
         private readonly IBotSubSystems botSubSystems;
 
         private readonly IUserActionHistory actionHistory;
+
         public MyBotClient(ITelegram telegram,
             ITelegramUpdateMessage telegramUpdateMessage,
             IDataStore dataStore,
@@ -39,7 +33,6 @@ namespace VideoStickerBot.Bot
             this.telegram = telegram;
             this.stateData = stateData;
             this.actionHistory = userActionHistory;
-
             this.botSubSystems = new BotSubSystems(telegram, dataStore, telegramUpdateMessage, videoResize, stateData);
         }
 
@@ -60,30 +53,19 @@ namespace VideoStickerBot.Bot
 
         public async Task Run()
         {
-            try
+            var handler = Init().Where(x => x.MatchHandlerExist())
+                .FirstOrDefault()?.GetHandlers().Where(x => x.Match())
+                .FirstOrDefault();
+
+            BotState? stateNow = null;
+
+            if (handler != null)
             {
-                var handler = Init().Where(x => x.MatchHandlerExist())
-                    .FirstOrDefault()?.GetHandlers().Where(x => x.Match())
-                    .FirstOrDefault();
-
-                BotState? stateNow = null; 
-
-                if (handler != null)
-                {
-                    await handler.Handle();
-                    stateNow =  handler.UpdateStateForCurrentUser();
-                }
-
-                await actionHistory.Write(stateNow?.ToString(), telegramUpdateMessage.ToString());
-            }
-            catch (Exception e)
-            {
-                string uid = Guid.NewGuid().ToString();
-                logger.Error(e, uid);
-                await telegram.SendTextMessage("Произошла ошибка 🥺🥺🥺. Админ уже разбирается 💪", telegramUpdateMessage.UserFromId);
-                await telegram.SendTextMessage($"Произошла ошибка во время работы бота. ID {uid}", Variables.GetInstance().BOT_OWNER_CHAT_ID);
+                await handler.Handle();
+                stateNow = handler.UpdateStateForCurrentUser();
             }
 
+            await actionHistory.Write(stateNow?.ToString(), telegramUpdateMessage.ToString());
         }
     }
 }

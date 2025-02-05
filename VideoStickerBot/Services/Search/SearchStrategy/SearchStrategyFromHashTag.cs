@@ -1,5 +1,4 @@
 ﻿using VideoStickerBot.Database;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace VideoStickerBot.Services.Search.SearchStrategy
 {
@@ -15,7 +14,7 @@ namespace VideoStickerBot.Services.Search.SearchStrategy
 
         public bool IsMatch()
         {
-            if(isMatch.HasValue) return isMatch.Value;
+            if (isMatch.HasValue) return isMatch.Value;
 
             isMatch = !string.IsNullOrEmpty(Query) && Query.Trim().StartsWith("#");
 
@@ -24,7 +23,7 @@ namespace VideoStickerBot.Services.Search.SearchStrategy
 
         public IEnumerable<VideoSticker> Search(IEnumerable<VideoSticker> SourceStickers)
         {
-            if(!IsMatch()) return GetEmptyResult();
+            if (!IsMatch()) return GetEmptyResult();
 
             var res = SourceStickers.Where(x => x.GetHashTags().Contains(Query.ToLower()));
 

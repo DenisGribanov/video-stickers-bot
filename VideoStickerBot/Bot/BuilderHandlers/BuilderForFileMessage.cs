@@ -1,18 +1,14 @@
 ﻿using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Bot.MessageHandlers;
 using VideoStickerBot.Bot.MessageHandlers.FileMessage;
-using VideoStickerBot.Services.DataStore;
-using VideoStickerBot.Services.TelegramIntegration;
-using VideoStickerBot.Services.VideoResize;
 
 namespace VideoStickerBot.Bot.BuilderHandlers
 {
     public class BuilderForFileMessage : BuilderHandlerBase
     {
-        public BuilderForFileMessage(IBotSubSystems botSubSystems) 
+        public BuilderForFileMessage(IBotSubSystems botSubSystems)
             : base(botSubSystems)
         {
- 
             AddAll();
         }
 

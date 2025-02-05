@@ -6,7 +6,7 @@ namespace VideoStickerBot.Services.StickerPublishing
 {
     public class StickerPublishingForReview : StickerPublishingBase
     {
-        public StickerPublishingForReview(ITelegram telegram, ITelegramUpdateMessage telegramUpdate, IDataStore dataStore) 
+        public StickerPublishingForReview(ITelegram telegram, ITelegramUpdateMessage telegramUpdate, IDataStore dataStore)
             : base(telegram, telegramUpdate, dataStore)
         {
         }
@@ -37,6 +37,5 @@ namespace VideoStickerBot.Services.StickerPublishing
                                          postPrivateChannel.ChannelId,
                                          postPrivateChannel.ReplyMessageId);
         }
-
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using VideoStickerBot.Bot.Handlers;
+﻿using VideoStickerBot.Bot.Handlers;
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Constants;
 using VideoStickerBot.Enums;
@@ -17,15 +16,35 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             if (isMatchForTelegramUpdate.HasValue)
                 return isMatchForTelegramUpdate.Value;
 
-            isMatchForTelegramUpdate = TelegramUpdate.IsBotCommand &&
-                                        (TelegramUpdate.MessageText.Contains(BotCommands.START_BOT) && TelegramUpdate.MessageText.Contains(BotCommands.COMPILATION.Replace("/", ""))                                         
-                                            || 
-                                            TelegramUpdate.MessageText.Equals(BotCommands.COMPILATION) ||
-                                            TelegramUpdate.MessageText.StartsWith(BotCommands.COMPILATION) && TelegramUpdate.MessageText.Contains("@")
-                                            );
+            if (TelegramUpdate.BotAddedToChatId.HasValue)
+            {
+                isMatchForTelegramUpdate = true;
+                return isMatchForTelegramUpdate.Value;
+            }
+            else if (!TelegramUpdate.BotAddedToChatId.HasValue && !TelegramUpdate.IsBotCommand)
+            {
+                isMatchForTelegramUpdate = false;
+                return isMatchForTelegramUpdate.Value;
+            }
+
+            var spaceExist = !string.IsNullOrEmpty(TelegramUpdate.MessageText) && TelegramUpdate.MessageText.Contains(' ');
+
+            //провалились в бота из Inline режима
+            bool cmdStartWithCompilation = TelegramUpdate.MessageText.Contains(BotCommands.START_BOT)
+                                            && TelegramUpdate.MessageText.Contains(BotCommands.COMPILATION.Replace("/", ""));
+
+            // /compilation
+            bool cmdCompilation = TelegramUpdate.MessageText.Equals(BotCommands.COMPILATION);
+
+            // /compilation@VideoStickersBot
+            bool cmdCompilationWithAtSymbol = TelegramUpdate.MessageText.StartsWith(BotCommands.COMPILATION) && TelegramUpdate.MessageText.Contains("@")
+                && !spaceExist;
+
+            isMatchForTelegramUpdate = cmdStartWithCompilation || cmdCompilation || cmdCompilationWithAtSymbol;
 
             return isMatchForTelegramUpdate.Value;
         }
+
         public override async Task Handle()
         {
             if (!Match()) return;
@@ -56,15 +75,20 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             keyBoard.LastOrDefault().Add(new KeyValuePair<string, string>("Свежие 🆕", CashTagValues.FRESH));
             keyBoard.LastOrDefault().Add(new KeyValuePair<string, string>("Популярные 🔥", CashTagValues.BEST));
 
-            if (TelegramUpdate.ChatId.HasValue)
+            if (TelegramUpdate.BotAddedToChatId.HasValue)
+            {
+                await Telegram.SendTextMessage("Подоборки кружочков для важных переговоров 😉🙃😊", TelegramUpdate.BotAddedToChatId.Value, keyBoard);
+            }
+            else if (TelegramUpdate.ChatId.HasValue)
             {
                 await Telegram.SendTextMessage("Подоборки кружочков для важных переговоров 😉🙃😊", TelegramUpdate.ChatId.Value, keyBoard);
+                await Telegram.SendTextMessage($"Чат с обсуждением: {Variables.GetInstance().SUPPORT_CHAT}", TelegramUpdate.ChatId.Value);
             }
             else
             {
                 await Telegram.SendTextMessage("Подоборки кружочков для важных переговоров 😉🙃😊", CurrentUser.ChatId, keyBoard);
+                await Telegram.SendTextMessage($"Чат с обсуждением: {Variables.GetInstance().SUPPORT_CHAT}", CurrentUser.ChatId);
             }
-
         }
 
         private List<List<KeyValuePair<string, string>>> GetKeyboard(IOrderedEnumerable<KeyValuePair<string, int>> keyValuePairs)
@@ -95,7 +119,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand
             }
 
             return result;
-
         }
 
         protected override BotState GetHandlerStateName()

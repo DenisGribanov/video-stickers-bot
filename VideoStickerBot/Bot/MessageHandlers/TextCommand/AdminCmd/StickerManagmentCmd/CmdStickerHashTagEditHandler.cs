@@ -10,7 +10,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
         {
         }
 
-
         public override bool Match()
         {
             if (isMatchForTelegramUpdate.HasValue)

@@ -22,15 +22,15 @@ namespace VideoStickerBot.Services.StickerSorted
         {
             var stickers = dataStore.GetVideoStickers();
 
-            var byAuthor = stickers.Where(x=>x.AuthorChatId== authorChatId).OrderByDescending(x=>x.Id).ToList();
+            var byAuthor = stickers.Where(x => x.AuthorChatId == authorChatId).OrderByDescending(x => x.Id).ToList();
 
             if (byAuthor.Count == 0) return stickers;
 
-            var hashSet = byAuthor.Select(x=>x.Id).ToHashSet();
+            var hashSet = byAuthor.Select(x => x.Id).ToHashSet();
 
-            foreach(var sticker in stickers)
+            foreach (var sticker in stickers)
             {
-                if(hashSet.Contains(sticker.Id)) continue;
+                if (hashSet.Contains(sticker.Id)) continue;
 
                 byAuthor.Add(sticker);
                 hashSet.Add(sticker.Id);

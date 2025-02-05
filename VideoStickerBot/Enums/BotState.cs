@@ -23,6 +23,8 @@
         INPUT_NEW_HASHTAG,
         COMPILATION_VIEW,
         COMPILATION_BY_TEXT_QUERY_VIEW,
-        HELP
+        HELP,
+        FRESH,
+        BEST
     }
 }

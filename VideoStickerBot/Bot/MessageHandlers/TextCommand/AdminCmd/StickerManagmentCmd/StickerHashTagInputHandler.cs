@@ -1,5 +1,4 @@
 ﻿using VideoStickerBot.Bot.Interfaces;
-using VideoStickerBot.Bot.KeyboardDto;
 using VideoStickerBot.Constants;
 using VideoStickerBot.Enums;
 
@@ -43,25 +42,22 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
                 return;
             }
 
-            sticker.Hashtags = TelegramUpdate.MessageText.Replace("#","").Trim();
+            sticker.Hashtags = TelegramUpdate.MessageText.Replace("#", "").Trim();
 
             foreach (var chPost in sticker.ChannelPosts)
             {
                 if (!chPost.ReplyMessageId.HasValue) continue;
 
-                if(chPost.Channel.ChannelType == (int)ChannelType.PUBLIC)
-                    await Telegram.EditMessageReplyMarkup(chPost.ReplyMessageId.Value, 
-                        chPost.Channel.Id, 
+                if (chPost.Channel.ChannelType == (int)ChannelType.PUBLIC)
+                    await Telegram.EditMessageReplyMarkup(chPost.ReplyMessageId.Value,
+                        chPost.Channel.Id,
                         sticker.BuildPostDescriptionText());
 
                 if (chPost.Channel.ChannelType == (int)ChannelType.PRIVATE_REVIEW)
-                    await Telegram.EditMessageReplyMarkup(chPost.ReplyMessageId.Value, 
+                    await Telegram.EditMessageReplyMarkup(chPost.ReplyMessageId.Value,
                         chPost.Channel.Id,
                         sticker.BuildPostDescriptionText(),
                         sticker.GetReviewKeybooardData());
-
-
-                logger.Info("update text from channel post success");
             }
 
             DataStore.UpdateVideoSticker(sticker);
@@ -71,7 +67,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd.StickerManagm
 
             ResetFromState(BotState.EDIT_HASHTAG);
         }
-
 
         protected override BotState GetHandlerStateName()
         {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VideoStickerBot.Database
+﻿namespace VideoStickerBot.Database
 {
     public partial class Channel
     {

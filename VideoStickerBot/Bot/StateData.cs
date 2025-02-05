@@ -1,5 +1,4 @@
-﻿using NLog;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using VideoStickerBot.Bot.Interfaces;
 using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
@@ -10,8 +9,6 @@ namespace VideoStickerBot.Bot
 {
     public class StateData : IStateData
     {
-        protected static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
         private readonly IDataStore DataStore;
 
         private readonly ITelegramUpdateMessage TelegramUpdate;
@@ -22,7 +19,7 @@ namespace VideoStickerBot.Bot
 
         public BotState? StateCurrentUser { get; private set; }
 
-        public StateData( IDataStore dataStore, ITelegramUpdateMessage telegramUpdate)
+        public StateData(IDataStore dataStore, ITelegramUpdateMessage telegramUpdate)
         {
             DataStore = dataStore;
             TelegramUpdate = telegramUpdate;
@@ -31,7 +28,7 @@ namespace VideoStickerBot.Bot
         public void LoadData()
         {
             StateCurrentUser = GetStateForCurrentUser();
-            
+
             CurrentUser = GetUserInStore(TelegramUpdate.UserFromId);
 
             if (CurrentUser == null && TelegramUpdate.UserFromId > 0)
@@ -45,10 +42,8 @@ namespace VideoStickerBot.Bot
                     SortedType = (int)SortEnum.PERSON_RANKING
                 });
             }
-
-            logger.Info($"User {TelegramUpdate.Username} (id: {TelegramUpdate.UserFromId}) Current State {StateCurrentUser}");
-
         }
+
         private BotState? GetStateForCurrentUser()
         {
             return GetCurrentState(TelegramUpdate.UserFromId);
@@ -67,7 +62,6 @@ namespace VideoStickerBot.Bot
         private TgUser RegisterUser(TgUser user)
         {
             DataStore.AddUser(user);
-            logger.Info($"add new user | id {user.ChatId}, userName {user.UserName}");
             return user;
         }
 
@@ -82,10 +76,7 @@ namespace VideoStickerBot.Bot
                 usersState[CurrentUser.ChatId] = value;
             }
 
-            logger.Info($"{CurrentUser.UserName} (id: {CurrentUser.ChatId}) | State Now = {value}");
-
             return value;
         }
-
     }
 }

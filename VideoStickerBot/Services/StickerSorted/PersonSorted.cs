@@ -25,11 +25,13 @@ namespace VideoStickerBot.Services.StickerSorted
 
             var stickers = dataStore.GetVideoStickers();
 
-            var stats = PersonsStat.GetByUser().OrderByDescending(x => x.UserClickCount).Select(x => x.Video).ToList();
+            var stats = PersonsStat.GetByUser()
+                                    .OrderByDescending(x => x.UserClickCount)
+                                    .Where(x => x.Video != null).Select(x => x.Video).ToList();
 
             HashSet<long> ids = stats.Select(x => x.Id).ToHashSet();
 
-            foreach (var sticker in stickers.OrderByDescending(x=>x.TotalClick()))
+            foreach (var sticker in stickers.OrderByDescending(x => x.TotalClick()))
             {
                 if (ids.Contains(sticker.Id)) continue;
 

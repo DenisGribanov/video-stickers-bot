@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using VideoStickerBot.Bot.Handlers;
 using VideoStickerBot.Bot.Interfaces;
-using VideoStickerBot.Bot.KeyboardDto;
 using VideoStickerBot.Constants;
 using VideoStickerBot.Database;
 using VideoStickerBot.Enums;
@@ -49,7 +48,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd
             }
 
             await Telegram.SendTextMessage(GetTextMessage(), CurrentUser.ChatId);
-
         }
 
         private string GetTextMessage()
@@ -95,7 +93,6 @@ namespace VideoStickerBot.Bot.MessageHandlers.TextCommand.AdminCmd
                     }
                 }
             }
-
 
             sB.Append($"\n\nДата загрузки: {sticker.DateAdd.ToString("dd.MM.yyyy HH:mm")}");
             sB.Append($"\n\nАвтор: @{sticker.AuthorChat.UserName} (id: {sticker.AuthorChatId})");
